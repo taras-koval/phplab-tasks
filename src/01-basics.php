@@ -41,7 +41,7 @@ function isLeapYear(int $year)
 	if ($year < 1900)
 		throw new InvalidArgumentException;
 
-	if ($year % 4 !== 0) 
+	if ($year % 4 !== 0)
 		return false;
 	else if ($year % 100 !== 0) 
 		return true;
@@ -70,7 +70,7 @@ function isSumEqual(string $input)
 	$first_sum = $input[0] + $input[1] + $input[2];
 	$second_sum = $input[3] + $input[4] + $input[5];
 
-	if ($first_sum == $second_sum)
+	if ($first_sum === $second_sum)
 		return true;
 	return false;
 }
