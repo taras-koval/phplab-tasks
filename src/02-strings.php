@@ -9,8 +9,8 @@
  */
 function snakeCaseToCamelCase(string $input)
 {
+	return lcfirst(str_replace('_', '', ucwords($input, '_')));
 }
-
 /**
  * The $input variable contains multibyte text like 'ФЫВА олдж'
  * Mirror each word individually and return transformed text (i.e. 'АВЫФ ждло')
@@ -21,6 +21,14 @@ function snakeCaseToCamelCase(string $input)
  */
 function mirrorMultibyteString(string $input)
 {
+	$words = explode(' ', $input);
+
+	foreach ($words as &$word) {
+		$chars = mb_str_split($word);
+		$word = implode('', array_reverse($chars));
+	}
+
+	return implode(' ', $words);
 }
 
 /**
@@ -39,4 +47,8 @@ function mirrorMultibyteString(string $input)
  */
 function getBrandName(string $noun)
 {
+	if (substr($noun, 0, 1) === substr($noun, -1))
+		return ucfirst($noun . substr($noun, 1));
+
+	return 'The ' . ucfirst($noun);
 }
