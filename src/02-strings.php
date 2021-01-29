@@ -47,8 +47,9 @@ function mirrorMultibyteString(string $input)
  */
 function getBrandName(string $noun)
 {
-	if (substr($noun, 0, 1) === substr($noun, -1))
+	if (substr($noun, 0, 1) === substr($noun, -1)) {
 		return ucfirst($noun . substr($noun, 1));
+	}
 
 	return 'The ' . ucfirst($noun);
 }
