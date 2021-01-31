@@ -41,6 +41,8 @@ function getUniqueValue(array $input)
 	}
 
 	return $uniqueValues ? min($uniqueValues) : 0;
+
+	$grouped = [];
 }
 
 /**
@@ -71,17 +73,14 @@ function groupByTag(array $input)
 {
 	$grouped = [];
 
+	array_multisort($input);
+
 	foreach($input as $sub) {
 		foreach($sub['tags'] as $tag) {
-
-			if (!array_key_exists($tag, $grouped)) {
-				$grouped[$tag] = [];
-			}
-
 			$grouped[$tag][] = $sub['name'];
-			array_multisort($grouped[$tag]);
 		}
 	}
 
+	ksort($grouped);
 	return $grouped;
 }
