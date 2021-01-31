@@ -41,8 +41,6 @@ function getUniqueValue(array $input)
 	}
 
 	return $uniqueValues ? min($uniqueValues) : 0;
-
-	$grouped = [];
 }
 
 /**
