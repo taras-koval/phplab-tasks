@@ -7,7 +7,7 @@
  */
 function sayHello()
 {
-    return 'Hello';
+	return 'Hello';
 }
 
 /**
@@ -19,7 +19,7 @@ function sayHello()
  */
 function sayHelloArgument($arg)
 {
-    return "Hello $arg";
+	return "Hello $arg";
 }
 
 /**
@@ -35,9 +35,12 @@ function sayHelloArgument($arg)
  */
 function sayHelloArgumentWrapper($arg)
 {
-    // put your code here
+	// put your code here
+	if (!is_bool($arg) && !is_numeric($arg) && !is_string($arg)) {
+		throw new InvalidArgumentException;
+	}
 
-    return sayHelloArgument($arg);
+	return sayHelloArgument($arg);
 }
 
 /**
@@ -48,10 +51,10 @@ function sayHelloArgumentWrapper($arg)
  */
 function countArguments()
 {
-    return [
-        'argument_count'  => func_num_args(),
-        'argument_values' => func_get_args(),
-    ];
+	return [
+		'argument_count'  => func_num_args(),
+		'argument_values' => func_get_args(),
+	];
 }
 
 /**
@@ -67,7 +70,14 @@ function countArguments()
  * @return array
  * @throws InvalidArgumentException
  */
-function countArgumentsWrapper()
+function countArgumentsWrapper(...$args)
 {
-    // put your code here
+	// put your code here
+	foreach($args as $arg) {
+		if (!is_string($arg)) {
+			throw new InvalidArgumentException;
+		}
+	}
+
+	return countArguments();
 }
