@@ -10,15 +10,15 @@
  */
 function repeatArrayValues(array $input)
 {
-	$newArr = [];
+    $newArr = [];
 
-	foreach ($input as $value) {
-		for ($i = 0; $i < $value; $i++) {
-			$newArr[] = $value;
-		}
-	}
+    foreach ($input as $value) {
+        for ($i = 0; $i < $value; $i++) {
+            $newArr[] = $value;
+        }
+    }
 
-	return $newArr;
+    return $newArr;
 }
 
 /**
@@ -31,16 +31,16 @@ function repeatArrayValues(array $input)
  */
 function getUniqueValue(array $input)
 {
-	$uniqueValues = [];
-	$countValues = array_count_values($input);
+    $uniqueValues = [];
+    $countValues = array_count_values($input);
 
-	foreach ($countValues as $key => $value) {
-		if ($value === 1) {
-			$uniqueValues[] = $key;
-		}
-	}
+    foreach ($countValues as $key => $value) {
+        if ($value === 1) {
+            $uniqueValues[] = $key;
+        }
+    }
 
-	return $uniqueValues ? min($uniqueValues) : 0;
+    return $uniqueValues ? min($uniqueValues) : 0;
 }
 
 /**
@@ -69,16 +69,16 @@ function getUniqueValue(array $input)
  */
 function groupByTag(array $input)
 {
-	$grouped = [];
+    $grouped = [];
 
-	array_multisort($input);
+    array_multisort($input);
 
-	foreach($input as $sub) {
-		foreach($sub['tags'] as $tag) {
-			$grouped[$tag][] = $sub['name'];
-		}
-	}
+    foreach($input as $sub) {
+        foreach($sub['tags'] as $tag) {
+            $grouped[$tag][] = $sub['name'];
+        }
+    }
 
-	ksort($grouped);
-	return $grouped;
+    ksort($grouped);
+    return $grouped;
 }
