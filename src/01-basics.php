@@ -75,8 +75,5 @@ function isSumEqual(string $input)
 	$first_sum = $input[0] + $input[1] + $input[2];
 	$second_sum = $input[3] + $input[4] + $input[5];
 
-	if ($first_sum === $second_sum) {
-		return true;
-	}
-	return false;
+	return $first_sum === $second_sum;
 }
