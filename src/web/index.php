@@ -10,6 +10,15 @@ $airports = require './airports.php';
  * (see Filtering tasks 1 and 2 below)
  */
 
+if (isset($_GET['filter_by_first_letter'])) {
+    $airports = filterByFirstLetter($airports, $_GET['filter_by_first_letter']);
+}
+
+if (isset($_GET['filter_by_state'])) {
+    $airports = filterByState($airports, $_GET['filter_by_state']);
+}
+
+
 // Sorting
 /**
  * Here you need to check $_GET request if it has sorting key
@@ -17,12 +26,32 @@ $airports = require './airports.php';
  * (see Sorting task below)
  */
 
+if (isset($_GET['sort'])) {
+    sortByField($airports, $_GET['sort']);
+}
+
 // Pagination
 /**
  * Here you need to check $_GET request if it has pagination key
  * and apply pagination logic
  * (see Pagination task below)
  */
+
+// Limit of records per page
+$limit = 5;
+
+// Total number of pages
+$pagesCount = ceil(count($airports) / $limit);
+
+$currentPage = $_GET['page'] ?? 1;
+$airports = array_slice($airports, ($currentPage - 1) * $limit, $limit);
+
+
+// Start number of pagination button
+$startPageBtn = (($currentPage - $limit) >= 1) ? $currentPage - $limit : 1;
+// Last number of pagination button
+$lastPageBtn = (($currentPage + $limit) <= $pagesCount) ? $currentPage + $limit : $pagesCount;
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -53,10 +82,11 @@ $airports = require './airports.php';
         Filter by first letter:
 
         <?php foreach (getUniqueFirstLetters(require './airports.php') as $letter): ?>
-            <a href="#"><?= $letter ?></a>
+            <?php $queryParts = array_merge($_GET, ['filter_by_first_letter' => $letter], ['page' => 1]); ?>
+            <a href="<?= '?' . http_build_query($queryParts) ?>"><?= $letter ?></a>
         <?php endforeach; ?>
 
-        <a href="/" class="float-right">Reset all filters</a>
+        <a href="/src/web/" class="float-right">Reset all filters</a>
     </div>
 
     <!--
@@ -72,10 +102,10 @@ $airports = require './airports.php';
     <table class="table">
         <thead>
         <tr>
-            <th scope="col"><a href="#">Name</a></th>
-            <th scope="col"><a href="#">Code</a></th>
-            <th scope="col"><a href="#">State</a></th>
-            <th scope="col"><a href="#">City</a></th>
+            <th scope="col"><a href="<?= '?' . http_build_query(array_merge($_GET, ['sort' => 'name'])) ?>">Name</a></th>
+            <th scope="col"><a href="<?= '?' . http_build_query(array_merge($_GET, ['sort' => 'code'])) ?>">Code</a></th>
+            <th scope="col"><a href="<?= '?' . http_build_query(array_merge($_GET, ['sort' => 'state'])) ?>">State</a></th>
+            <th scope="col"><a href="<?= '?' . http_build_query(array_merge($_GET, ['sort' => 'city'])) ?>">City</a></th>
             <th scope="col">Address</th>
             <th scope="col">Timezone</th>
         </tr>
@@ -95,7 +125,10 @@ $airports = require './airports.php';
         <tr>
             <td><?= $airport['name'] ?></td>
             <td><?= $airport['code'] ?></td>
-            <td><a href="#"><?= $airport['state'] ?></a></td>
+            <td>
+                <?php $queryParts = array_merge($_GET, ['filter_by_state' => $airport['state']], ['page' => 1]); ?>
+                <a href="<?= '?' . http_build_query($queryParts) ?>"><?= $airport['state'] ?></a>
+            </td>
             <td><?= $airport['city'] ?></td>
             <td><?= $airport['address'] ?></td>
             <td><?= $airport['timezone'] ?></td>
@@ -115,9 +148,14 @@ $airports = require './airports.php';
     -->
     <nav aria-label="Navigation">
         <ul class="pagination justify-content-center">
-            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
+
+        <?php for ($i = $startPageBtn; $i < $lastPageBtn; $i++): ?>
+            <li class="page-item <?= ($i == $currentPage) ? 'active' : '' ?>">
+                <?php $queryParts = array_merge($_GET, ['page' => $i]); ?>
+                <a class="page-link" href="<?= '?' . http_build_query($queryParts) ?>"><?= $i ?></a>
+            </li>
+        <?php endfor; ?>
+
         </ul>
     </nav>
 
