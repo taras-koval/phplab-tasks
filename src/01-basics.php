@@ -64,8 +64,8 @@ function isSumEqual(string $input)
         throw new InvalidArgumentException;
     }
 
-    $first_sum = $input[0] + $input[1] + $input[2];
-    $second_sum = $input[3] + $input[4] + $input[5];
+    $firstSum = $input[0] + $input[1] + $input[2];
+    $secondSum = $input[3] + $input[4] + $input[5];
 
-    return $first_sum === $second_sum;
+    return $firstSum === $secondSum;
 }
